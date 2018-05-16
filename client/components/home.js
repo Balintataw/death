@@ -22,12 +22,15 @@ const styles = StyleSheet.create({
 });
 
 class Home extends Component {
+  static defaultProps = {
+
+  }
   state = {
     response: ''
-  };
+  }
+
   componentDidMount() {
 
-    console.log('here')
 
     const API = 'http://192.168.50.34:3001/api/hello'
     // const API = 'http://localhost:3001/getquote'
@@ -39,13 +42,13 @@ class Home extends Component {
               }
         }).then(response => response.json())
             .then(resp => {
-              console.log(resp)
+              console.log('resp',resp.quote.quotes)
               this.setState({
-                response: resp.express
+                response: resp.quote.quotes
               })
             }).catch((error) => {
               console.error(error);
-            });
+            })
   }     
 
 
