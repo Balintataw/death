@@ -19,6 +19,17 @@ const styles = StyleSheet.create({
         textShadowColor: 'grey',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 4,
+    },
+    smallText: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginRight: 20,
+        marginLeft: 20,
+        color: 'white',
+        textShadowColor: 'grey',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 4,
     }
 })
 
@@ -30,6 +41,7 @@ class Modal extends Component {
             <View style={styles.container}>
             <StatusBar hidden={true} />
                 <Text style={styles.text}>Death</Text>
+                <Text style={styles.smallText}>The inevitable app...</Text>
             </View>
             
         );

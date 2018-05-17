@@ -8,8 +8,11 @@
   },
   "dependencies": {
     "config": "^1.30.0",
+    "expo": "^27.0.1",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "react-native": "^0.55.4",
+    "react-native-push-notification": "^3.0.2"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
