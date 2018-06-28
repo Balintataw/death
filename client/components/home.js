@@ -11,9 +11,12 @@ import { StyleSheet,
 import { Actions } from 'react-native-router-flux'
 import { Permissions, Notifications } from 'expo'
 
-const API = 'http://192.168.50.34:3001/api/getquote'
-// const API = 'http://localhost:3001/getquote'
+// const API = 'http://192.168.50.34:3001/api/getquote'
+// const API = 'http://localhost:3001/api/getquote'
 // const API = 'http://10.68.0.239:3001/api/getquote'
+const API = 'http://192.168.50.109:3001/api/getquote'
+// const API = process.env.CONN_API
+
 
 
 class Home extends Component {

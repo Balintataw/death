@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+require('dotenv').config()
 const config = require('config')
 const conn = require('./lib/conn')
 
@@ -7,7 +8,7 @@ const port = process.env.PORT || 3001;
 
 app.get('/api/getquote', (req, res) => {
 //   res.send({ express: 'Hello From Express' });
-
+    console.log('in server')
   const sql = `
     SELECT * FROM quotes
   `
