@@ -31,4 +31,43 @@ app.get('/api/getquote', (req, res) => {
   })
 });
 
+app.get('/api/get_active_status', (req, res, next) => {
+    const sql = `
+        SELECT active_status
+        FROM users
+        WHERE name = 'biff';
+    `
+
+    conn.query(sql, (err, results, fields) => {
+        res.json({
+            results
+        })
+    })
+})
+
+app.get('/api/toggle_active_status', (req, res, next) => {
+    console.log('toggle active status')
+    const sql = `
+        UPDATE users
+        SET active_status = !active_status
+        WHERE name = 'biff';
+    `
+    const sql2 = `
+        UPDATE users 
+        SET active_status = CASE WHEN active_status = 1 THEN 0 ELSE 1 END 
+        WHERE name = 'biff';
+    `
+    const sql3 = `
+        UPDATE users
+        SET active_status = '5'
+        WHERE name = 'biff'
+    `
+    conn.query(sql, (err, results, fields) => {
+        console.log(results + " record(s) updated");
+        res.send({
+            results
+        })
+    })
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
