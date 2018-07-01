@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux'
 import { Permissions, Notifications } from 'expo'
 import { Button } from 'react-native-elements'
 import axios from 'axios'
+import ModalDropdown from 'react-native-modal-dropdown'
 
 const styles = StyleSheet.create({
 
@@ -36,10 +37,18 @@ const styles = StyleSheet.create({
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 4,
   },
+  pickerWrapper: {
+    // display: 'flex'
+    alignItems: 'center',
+    flex: 1
+  },
   pickerHeader: {
     fontSize: 25,
     marginRight: 20,
     marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    textAlign: 'center',
     color: 'white',
   },
   picker: {
@@ -51,12 +60,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginLeft:20,
     marginRight: 20,
+    textAlign: 'center',
     color: 'white'
   }
 })
-
-const APIgetActive = 'http://192.168.50.109:3001/api/get_active_status'
-const APItoggleActive = 'http://192.168.50.109:3001/api/toggle_active_status'
+const API = 'http://192.168.50.109:3001/'
+// const APIgetActive = 'http://192.168.50.109:3001/api/get_active_status'
+// const APItoggleActive = 'http://192.168.50.109:3001/api/toggle_active_status'
 class Settings extends Component {
   static defaultProps = {
 
@@ -84,9 +94,9 @@ class Settings extends Component {
   }
   
   getCurrrentActiveStatus = () => {
-    axios.get(APIgetActive).then(resp => {
+    axios.get(API + "api/get_active_status").then(resp => {
       const status = resp.data.results[0].active_status
-      console.log(resp.data.results[0])
+      // console.log(resp.data.results[0])
       if (status === 0) {
         this.setState({
           activeStatus: 'Off',
@@ -106,21 +116,26 @@ class Settings extends Component {
   activateNotificationSending = () => {
     var t = this
     // Actions.home()
-    axios.get(APItoggleActive).then(resp => {
-      console.log(resp)
+    axios.get(API + "api/toggle_active_status").then(resp => {
       t.getCurrrentActiveStatus()
     }).catch(err => {
       console.log(err)
     })
   }
 
-  setMessageType = (messageType) => {
-    this.setState({selectedMessageType: messageType})
+  setMessageType = (index, val) => {
+    console.log(index, val)
+    const type = val
     // sql call to update message type
+    axios.post(API + "api/set_message_type", {type}
+    ).then(resp => {
+      this.setState({selectedMessageType: type})
+    }).catch(err => {
+      console.log(err)
+    })
   }
   
   render() {
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar hidden={true} />
@@ -134,15 +149,27 @@ class Settings extends Component {
             onPress={ this.activateNotificationSending } />
 
           <Text style={styles.activeText}>Active Status: { this.state.activeStatus }</Text>
-          <Text style={styles.pickerHeader}>Current Type: { this.state.selectedMessageType }</Text>
-          
-          <Picker
-            selectedValue={this.state.selectedMessageType}
-            style={styles.picker}
-            onValueChange={this.setMessageType}>
-            <Picker.Item label="Meditations" value="meditations" />
-            <Picker.Item label="All" value="all" />
-          </Picker>
+          <View style={styles.pickerWrapper}>
+            <Text style={styles.pickerHeader}>Current Type:</Text>
+            {/* <Picker
+              selectedValue={this.state.selectedMessageType}
+              style={styles.picker}
+              onValueChange={this.setMessageType}>
+              <Picker.Item label="Meditations" value="meditations" />
+              <Picker.Item label="All" value="all" />
+            </Picker> */}
+            <ModalDropdown 
+              animated = {true}
+              options = {['Meditations', 'All']} 
+              style = {{width: 290, marginLeft: 20, marginRight: 20, backgroundColor: 'orange', borderRadius: 9, padding: 6}} //style of button
+              textStyle = {{color:'white', fontSize: 20, textAlign: 'center'}}              //style of button text
+              dropdownStyle = {{width: 280, borderRadius: 5, backgroundColor: 'white'}}
+              // adjustFrame = {(width) => {width: width}}
+              dropdownTextStyle = {{color: 'grey', fontSize: 15}}
+              defaultValue = {'Select'}
+              onSelect={(index, value) => this.setMessageType(index, value)}
+            />
+          </View>
         </View>
       </ScrollView>
     
